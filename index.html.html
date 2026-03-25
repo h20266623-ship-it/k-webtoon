@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Content Universe — 웹툰·웹소설 산업 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-1: #E8F0E0;
+  --green-2: #C4D4AF;
+  --green-3: #A8BC8E;
+  --green-4: #8BA674;
+  --green-5: #6E8F5A;
+  --sage:    #A8BC8E;
+  --sage-lt: #C4D4AF;
+  --cream:   #F2EBDF;
+  --forest:  #8BA674;
+  --forest-dk: #6E8F5A;
+  --ink:     #1e2a1a;
+  --ink-mid: #2e3d28;
+  --muted:   #7a8a70;
+  --border:  #cdd8be;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 18px;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--sage); border-radius: 99px; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .9rem 2.5rem;
+  background: rgba(242,235,223,.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--forest-dk);
+  letter-spacing: .04em;
+}
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  font-size: .88rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--muted);
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--forest-dk); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 7rem 2.5rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 70% at 70% 50%, rgba(168,188,142,.25) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 20% 80%, rgba(196,212,175,.2) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-text { position: relative; z-index: 1; }
+.hero-eyebrow {
+  display: inline-block;
+  font-size: .85rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--forest);
+  border: 1px solid var(--sage);
+  padding: .35rem .9rem;
+  border-radius: 99px;
+  margin-bottom: 1.5rem;
+}
+.hero-h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 5.5vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.07;
+  color: var(--ink);
+  margin-bottom: 1.2rem;
+}
+.hero-h1 em {
+  font-style: italic;
+  color: var(--forest);
+}
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 44ch;
+  margin-bottom: 2.5rem;
+  line-height: 1.8;
+}
+.hero-cta {
+  display: inline-block;
+  background: var(--forest);
+  color: var(--cream);
+  padding: .85rem 2rem;
+  border-radius: 4px;
+  font-size: .85rem;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-decoration: none;
+  transition: background .2s, transform .15s;
+}
+.hero-cta:hover { background: var(--forest-dk); transform: translateY(-2px); }
+
+.hero-stats {
+  display: flex; gap: 2.5rem; margin-top: 3rem;
+}
+.hstat-n {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--forest-dk);
+  line-height: 1;
+}
+.hstat-l {
+  font-size: .72rem;
+  color: var(--muted);
+  letter-spacing: .05em;
+  margin-top: .25rem;
+}
+
+/* hero right — panel illustration */
+.hero-visual {
+  position: relative; z-index: 1;
+  display: flex; justify-content: center; align-items: center;
+}
+.webtoon-panels {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: 6px;
+  width: 320px;
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.panel {
+  background: var(--sage-lt);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  border: 1.5px solid var(--sage);
+  transition: transform .3s;
+}
+.panel:hover { transform: scale(1.02); }
+.panel-tall { height: 180px; }
+.panel-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.panel-half { height: 120px; }
+.panel-wide { height: 90px; }
+.panel-inner {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .75rem;
+  color: var(--forest-dk);
+  font-family: 'Noto Serif KR', serif;
+  letter-spacing: .05em;
+  position: relative;
+  overflow: hidden;
+}
+/* SVG artwork in panels */
+.panel-inner svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.panel-label {
+  position: absolute; bottom: 8px; left: 10px;
+  font-size: .65rem; color: var(--forest-dk);
+  background: rgba(242,235,223,.85);
+  padding: 2px 8px; border-radius: 99px;
+  font-weight: 500;
+}
+
+/* ── SECTION COMMON ── */
+section { padding: 6rem 2.5rem; }
+.section-eyebrow {
+  font-size: .85rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--forest); margin-bottom: .75rem;
+}
+.section-h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 3.8vw, 3.3rem);
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+.section-desc {
+  font-size: 1.05rem;
+  color: var(--muted);
+  max-width: 52ch;
+  line-height: 1.9;
+  margin-bottom: 3.5rem;
+}
+
+/* ── ECOSYSTEM ── */
+.eco {
+  background: var(--green-5);
+  color: var(--cream);
+}
+.eco .section-h2 { color: var(--green-1); }
+.eco .section-eyebrow { color: var(--green-1); }
+.eco .section-desc { color: var(--green-1); opacity: .85; }
+
+.value-chain {
+  display: flex; align-items: stretch; gap: 0;
+  margin-bottom: 4rem;
+  border: 1px solid rgba(232,240,224,.3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.vc-step {
+  flex: 1; padding: 1.75rem 1.5rem;
+  border-right: 1px solid rgba(232,240,224,.2);
+  position: relative;
+  cursor: default;
+  transition: background .25s;
+}
+.vc-step:last-child { border-right: none; }
+.vc-step:hover { background: rgba(255,255,255,.1); }
+.vc-step::after {
+  content: '→';
+  position: absolute; right: -14px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--green-2);
+  font-size: 1.2rem;
+  z-index: 2;
+}
+.vc-step:last-child::after { display: none; }
+.vc-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem; font-weight: 700;
+  color: var(--green-1);
+  line-height: 1;
+  margin-bottom: .5rem;
+}
+.vc-title {
+  font-size: .9rem; font-weight: 700;
+  color: var(--green-1);
+  margin-bottom: .4rem;
+}
+.vc-ex {
+  font-size: .75rem;
+  color: var(--green-2);
+  opacity: .85;
+  font-style: italic;
+}
+
+.platform-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+.plat-card {
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(232,240,224,.25);
+  border-radius: 8px;
+  padding: 1.25rem;
+  transition: border-color .2s, background .2s;
+}
+.plat-card:hover {
+  background: rgba(255,255,255,.18);
+  border-color: var(--green-2);
+}
+.plat-name {
+  font-weight: 700;
+  font-size: .95rem;
+  color: var(--green-1);
+  margin-bottom: .4rem;
+}
+.plat-desc { font-size: .78rem; color: var(--green-1); opacity: .8; line-height: 1.6; }
+
+/* ── KEY FACTORS ── */
+.factors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.factor-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2rem 1.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform .25s, box-shadow .25s;
+}
+.factor-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--forest);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s;
+}
+.factor-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(78,107,70,.12); }
+.factor-card:hover::before { transform: scaleX(1); }
+.factor-icon {
+  width: 48px; height: 48px;
+  background: var(--sage-lt);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.25rem;
+}
+.factor-icon svg { width: 24px; height: 24px; }
+.factor-title {
+  font-weight: 700; font-size: 1rem;
+  color: var(--ink);
+  margin-bottom: .6rem;
+}
+.factor-body { font-size: .85rem; color: var(--muted); line-height: 1.75; }
+
+/* ── GLOBAL ── */
+.global { background: var(--sage-lt); }
+
+.bar-chart { margin-bottom: 3rem; }
+.bar-item {
+  display: grid;
+  grid-template-columns: 110px 1fr 48px;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: .9rem;
+}
+.bar-region { font-size: .82rem; font-weight: 500; color: var(--ink-mid); }
+.bar-track {
+  height: 10px;
+  background: rgba(255,255,255,.5);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--forest);
+  border-radius: 99px;
+  width: 0;
+  transition: width 1.2s cubic-bezier(.4,0,.2,1);
+}
+.bar-pct { font-size: .78rem; font-weight: 700; color: var(--forest-dk); text-align: right; }
+
+.local-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.local-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+}
+.local-flag {
+  font-size: 1.8rem;
+  margin-bottom: .75rem;
+  display: block;
+}
+.local-country { font-weight: 700; font-size: .95rem; color: var(--ink); margin-bottom: .4rem; }
+.local-desc { font-size: .8rem; color: var(--muted); line-height: 1.7; }
+
+/* ── OSMU HOVER ── */
+.osmu-section { background: var(--cream); }
+.osmu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+.webtoon-cover {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  position: relative;
+  aspect-ratio: 3/4;
+  transition: transform .3s, box-shadow .3s;
+  background: var(--green-2);
+}
+.webtoon-cover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(110,143,90,.2); }
+.cover-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .4s;
+}
+.webtoon-cover:hover .cover-img { transform: scale(1.04); }
+.cover-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 12px;
+  background: var(--green-2);
+  color: var(--forest-dk);
+}
+.cover-placeholder-icon {
+  width: 52px; height: 52px;
+  border: 2px dashed var(--forest);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  opacity: .5;
+}
+.cover-placeholder-icon svg { width: 24px; height: 24px; }
+.cover-placeholder-text {
+  font-size: .8rem;
+  color: var(--forest-dk);
+  opacity: .6;
+  text-align: center;
+  line-height: 1.5;
+}
+.cover-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(30,42,26,.88) 0%, rgba(30,42,26,.15) 55%, transparent 100%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 1.2rem;
+  opacity: 0;
+  transition: opacity .35s;
+}
+.webtoon-cover:hover .cover-overlay { opacity: 1; }
+.cover-tag {
+  display: inline-block;
+  background: var(--green-4);
+  color: var(--green-1);
+  font-size: .68rem;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 99px;
+  letter-spacing: .06em;
+  margin-bottom: .5rem;
+  width: fit-content;
+}
+.cover-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--green-1);
+  line-height: 1.3;
+  margin-bottom: .35rem;
+}
+.cover-desc {
+  font-size: .78rem;
+  color: var(--green-2);
+  line-height: 1.55;
+}
+.cover-badge {
+  position: absolute; top: 12px; right: 12px;
+  background: var(--green-5);
+  color: var(--green-1);
+  font-size: .65rem;
+  font-weight: 500;
+  letter-spacing: .08em;
+  padding: 4px 10px;
+  border-radius: 99px;
+}
+.cover-upload-hint {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(110,143,90,.9);
+  color: var(--green-1);
+  font-size: .75rem;
+  text-align: center;
+  padding: .55rem;
+  transform: translateY(100%);
+  transition: transform .3s;
+}
+.webtoon-cover:hover .cover-upload-hint { transform: translateY(0); }
+
+/* ── FUTURE ── */
+.future { background: var(--green-4); }
+.future .section-h2 { color: var(--green-1); }
+.future .section-eyebrow { color: var(--green-1); }
+.future .section-desc { color: var(--green-1); opacity: .85; }
+
+.future-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.future-card {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(232,240,224,.25);
+  border-radius: 10px;
+  padding: 2rem;
+  transition: border-color .25s, background .25s;
+}
+.future-card:hover {
+  background: rgba(255,255,255,.2);
+  border-color: var(--green-2);
+}
+.future-label {
+  font-size: .7rem; letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--green-1);
+  margin-bottom: .75rem;
+}
+.future-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem; font-weight: 700;
+  color: var(--green-1);
+  margin-bottom: .75rem;
+}
+.future-body { font-size: .85rem; color: var(--green-1); opacity: .85; line-height: 1.8; }
+.future-stat {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(232,240,224,.2);
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; font-weight: 700;
+  color: var(--green-1);
+}
+.future-stat-l { font-size: .72rem; color: var(--sage-lt); margin-top: .25rem; opacity: .8; font-family: 'Noto Sans KR', sans-serif; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--green-5);
+  color: var(--green-1);
+  opacity: .9;
+  text-align: center;
+  padding: 2rem;
+  font-size: .78rem;
+  letter-spacing: .06em;
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; padding-top: 6rem; }
+  .hero-visual { display: none; }
+  .factors-grid { grid-template-columns: 1fr; }
+  .osmu-grid { grid-template-columns: repeat(2, 1fr); }
+  .future-grid, .local-grid { grid-template-columns: 1fr; }
+  .value-chain { flex-direction: column; }
+  .vc-step::after { content: '↓'; right: 50%; top: auto; bottom: -14px; transform: translateX(50%); }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">K·CONTENT</div>
+  <ul class="nav-links">
+    <li><a href="#ecosystem">생태계</a></li>
+    <li><a href="#factors">성공 요인</a></li>
+    <li><a href="#global">글로벌</a></li>
+    <li><a href="#osmu">OSMU</a></li>
+    <li><a href="#future">미래 비전</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <span class="hero-eyebrow">K-Content Universe 2025</span>
+    <h1 class="hero-h1">Next Story,<br><em>Next Universe.</em></h1>
+    <p class="hero-sub">대한민국을 넘어 세계의 상상력을 지배하는<br>K-콘텐츠의 힘. 웹툰과 웹소설이 만드는<br>무한한 IP 생태계를 탐험하세요.</p>
+    <a href="#ecosystem" class="hero-cta">산업 리포트 보기</a>
+    <div class="hero-stats">
+      <div>
+        <div class="hstat-n">100억+</div>
+        <div class="hstat-l">누적 조회수</div>
+      </div>
+      <div>
+        <div class="hstat-n">100개국</div>
+        <div class="hstat-l">글로벌 수출</div>
+      </div>
+      <div>
+        <div class="hstat-n">₩2.3조</div>
+        <div class="hstat-l">시장 규모 (2024)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="webtoon-panels">
+      <!-- tall panel -->
+      <div class="panel panel-tall">
+        <div class="panel-inner">
+          <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="180" fill="#C4D4AF"/>
+            <rect x="60" y="30" width="200" height="120" rx="4" fill="#A8BC8E" opacity=".6"/>
+            <circle cx="160" cy="90" r="38" fill="#8BA674" opacity=".4"/>
+            <circle cx="160" cy="72" r="22" fill="#6E8F5A" opacity=".5"/>
+            <rect x="130" y="100" width="60" height="28" rx="3" fill="#6E8F5A" opacity=".35"/>
+            <!-- hatching lines -->
+            <line x1="80" y1="40" x2="240" y2="40" stroke="#8BA674" stroke-width=".8" opacity=".4"/>
+            <line x1="80" y1="50" x2="240" y2="50" stroke="#8BA674" stroke-width=".8" opacity=".3"/>
+            <!-- speed lines -->
+            <line x1="20" y1="90" x2="100" y2="88" stroke="#6E8F5A" stroke-width="1.5" opacity=".2"/>
+            <line x1="20" y1="96" x2="100" y2="94" stroke="#6E8F5A" stroke-width="1" opacity=".15"/>
+          </svg>
+          <div class="panel-label">웹소설</div>
+        </div>
+      </div>
+      <!-- two half panels -->
+      <div class="panel-row">
+        <div class="panel panel-half">
+          <div class="panel-inner">
+            <svg viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg">
+              <rect width="150" height="120" fill="#A8BC8E"/>
+              <rect x="15" y="15" width="120" height="90" rx="3" fill="#8BA674" opacity=".3"/>
+              <circle cx="75" cy="52" r="20" fill="#6E8F5A" opacity=".45"/>
+              <rect x="35" y="80" width="80" height="14" rx="2" fill="#6E8F5A" opacity=".3"/>
+              <line x1="10" y1="30" x2="140" y2="30" stroke="white" stroke-width=".7" opacity=".3"/>
+              <line x1="10" y1="38" x2="140" y2="38" stroke="white" stroke-width=".7" opacity=".25"/>
+            </svg>
+            <div class="panel-label">웹툰</div>
+          </div>
+        </div>
+        <div class="panel panel-half">
+          <div class="panel-inner">
+            <svg viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg">
+              <rect width="150" height="120" fill="#F2EBDF"/>
+              <rect x="10" y="10" width="130" height="100" rx="3" fill="#C4D4AF" opacity=".6"/>
+              <polygon points="55,35 55,85 110,60" fill="#8BA674" opacity=".55"/>
+              <circle cx="75" cy="60" r="26" fill="none" stroke="#8BA674" stroke-width="2" opacity=".4"/>
+            </svg>
+            <div class="panel-label">드라마화</div>
+          </div>
+        </div>
+      </div>
+      <!-- wide bottom panel -->
+      <div class="panel panel-wide">
+        <div class="panel-inner">
+          <svg viewBox="0 0 320 90" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="90" fill="#8BA674"/>
+            <rect x="0" y="0" width="320" height="90" fill="#6E8F5A" opacity=".3"/>
+            <text x="160" y="48" text-anchor="middle" font-family="serif" font-size="18" fill="#F2EBDF" opacity=".9" letter-spacing="6">GLOBAL IP</text>
+            <text x="160" y="66" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#C4D4AF" opacity=".7" letter-spacing="4">ONE SOURCE · MULTI USE</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section class="eco" id="ecosystem">
+  <div class="reveal">
+    <div class="section-eyebrow">Industry Ecosystem</div>
+    <h2 class="section-h2">밸류체인: 하나의 이야기,<br>무한한 세계관</h2>
+    <p class="section-desc">웹소설 한 편이 웹툰이 되고, 드라마가 되고, 게임이 된다. OSMU 전략이 K-콘텐츠의 경제적 파급력을 극대화한다.</p>
+  </div>
+  <div class="reveal" style="transition-delay:.15s">
+    <div class="value-chain">
+      <div class="vc-step">
+        <div class="vc-num">01</div>
+        <div class="vc-title">웹소설</div>
+        <div class="vc-ex">나 혼자만 레벨업<br>내 남편과 결혼해줘</div>
+      </div>
+      <div class="vc-step">
+        <div class="vc-num">02</div>
+        <div class="vc-title">웹툰</div>
+        <div class="vc-ex">원작 IP의 시각화<br>글로벌 팬덤 형성</div>
+      </div>
+      <div class="vc-step">
+        <div class="vc-num">03</div>
+        <div class="vc-title">드라마·영화</div>
+        <div class="vc-ex">OTT 오리지널<br>국제 공동제작</div>
+      </div>
+      <div class="vc-step">
+        <div class="vc-num">04</div>
+        <div class="vc-title">게임·굿즈</div>
+        <div class="vc-ex">모바일 게임<br>캐릭터 라이선싱</div>
+      </div>
+      <div class="vc-step">
+        <div class="vc-num">05</div>
+        <div class="vc-title">글로벌 IP</div>
+        <div class="vc-ex">할리우드 리메이크<br>해외 플랫폼 독점</div>
+      </div>
+    </div>
+  </div>
+  <div class="reveal" style="transition-delay:.25s">
+    <div class="section-eyebrow" style="margin-bottom:1.25rem;">Platform Power</div>
+    <div class="platform-grid">
+      <div class="plat-card">
+        <div class="plat-name">네이버웹툰</div>
+        <div class="plat-desc">월 8,200만 글로벌 MAU. 영어·스페인어·프랑스어 등 10개 언어 서비스. 2021년 나스닥 상장.</div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-name">카카오페이지</div>
+        <div class="plat-desc">기다리면 무료 모델로 국내 1위. 픽코마(일본)·타파스(북미)로 글로벌 확장.</div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-name">리디북스</div>
+        <div class="plat-desc">웹소설 전문 플랫폼. 로맨스·판타지 장르 특화. 해외 구독형 서비스 론칭.</div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-name">문피아·조아라</div>
+        <div class="plat-desc">국내 웹소설 원작 IP의 산실. 신인 작가 등용문이자 흥행 IP 발굴 플랫폼.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY FACTORS -->
+<section id="factors" style="background:var(--cream);">
+  <div class="reveal">
+    <div class="section-eyebrow">Key Success Factors</div>
+    <h2 class="section-h2">왜 K-콘텐츠인가?</h2>
+    <p class="section-desc">세 가지 구조적 강점이 K-웹툰·웹소설을 글로벌 표준으로 만들었다.</p>
+  </div>
+  <div class="factors-grid reveal" style="transition-delay:.15s">
+    <div class="factor-card">
+      <div class="factor-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#8BA674" stroke-width="1.8">
+          <rect x="5" y="2" width="14" height="20" rx="2"/>
+          <line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/>
+          <line x1="9" y1="15" x2="12" y2="15"/>
+        </svg>
+      </div>
+      <div class="factor-title">스낵 컬처 (Snack Culture)</div>
+      <div class="factor-body">모바일 세로 스크롤 형식으로 언제 어디서나 짧은 시간에 즐길 수 있는 최적화된 콘텐츠 포맷. 평균 회차 소비 시간 3~5분.</div>
+    </div>
+    <div class="factor-card">
+      <div class="factor-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#8BA674" stroke-width="1.8">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </div>
+      <div class="factor-title">독자 참여형 시스템</div>
+      <div class="factor-body">댓글·별점·실시간 피드백이 작가의 연재 방향에 직접 영향을 미친다. 독자와 작가가 함께 만드는 살아있는 스토리텔링.</div>
+    </div>
+    <div class="factor-card">
+      <div class="factor-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#8BA674" stroke-width="1.8">
+          <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+        </svg>
+      </div>
+      <div class="factor-title">데이터 & AI 기술</div>
+      <div class="factor-body">AI 자동 채색·번역 기술로 제작 공정 혁신. 독자 취향 분석 추천 알고리즘으로 체류시간 극대화. 창작과 기술의 결합.</div>
+    </div>
+  </div>
+</section>
+
+<!-- GLOBAL -->
+<section class="global" id="global">
+  <div class="reveal">
+    <div class="section-eyebrow">Global Expansion</div>
+    <h2 class="section-h2">세계 시장 점유율</h2>
+    <p class="section-desc">K-웹툰은 이미 북미·일본·동남아를 선도하는 글로벌 콘텐츠 포맷이 되었다.</p>
+  </div>
+  <div class="bar-chart reveal" style="transition-delay:.1s" id="barChart">
+    <div class="bar-item">
+      <span class="bar-region">🇺🇸 북미</span>
+      <div class="bar-track"><div class="bar-fill" data-pct="72"></div></div>
+      <span class="bar-pct">72%</span>
+    </div>
+    <div class="bar-item">
+      <span class="bar-region">🇯🇵 일본</span>
+      <div class="bar-track"><div class="bar-fill" data-pct="58"></div></div>
+      <span class="bar-pct">58%</span>
+    </div>
+    <div class="bar-item">
+      <span class="bar-region">🇹🇭 동남아</span>
+      <div class="bar-track"><div class="bar-fill" data-pct="81"></div></div>
+      <span class="bar-pct">81%</span>
+    </div>
+    <div class="bar-item">
+      <span class="bar-region">🇫🇷 유럽</span>
+      <div class="bar-track"><div class="bar-fill" data-pct="44"></div></div>
+      <span class="bar-pct">44%</span>
+    </div>
+    <div class="bar-item">
+      <span class="bar-region">🇧🇷 중남미</span>
+      <div class="bar-track"><div class="bar-fill" data-pct="63"></div></div>
+      <span class="bar-pct">63%</span>
+    </div>
+  </div>
+  <div class="local-grid reveal" style="transition-delay:.2s">
+    <div class="local-card">
+      <span class="local-flag">🇺🇸</span>
+      <div class="local-country">북미 현지화 전략</div>
+      <div class="local-desc">영어권 현지 작가 육성 프로그램 운영. 북미 오리지널 웹툰으로 현지 감성 공략. 타파스·라인웹툰 통합 플랫폼 확장.</div>
+    </div>
+    <div class="local-card">
+      <span class="local-flag">🇯🇵</span>
+      <div class="local-country">일본 픽코마 전략</div>
+      <div class="local-desc">기다리면 무료 BM을 일본에 이식, 앱스토어 매출 1위 달성. 일본 만화 시장에 K-웹툰 포맷을 성공적으로 안착.</div>
+    </div>
+    <div class="local-card">
+      <span class="local-flag">🇹🇭</span>
+      <div class="local-country">동남아 현지 작가 육성</div>
+      <div class="local-desc">태국·인도네시아·베트남 현지 작가 아카데미 운영. 현지 IP를 한국 플랫폼으로 역수입하는 쌍방향 생태계 구축.</div>
+    </div>
+    <div class="local-card">
+      <span class="local-flag">🌍</span>
+      <div class="local-country">다국어 AI 번역</div>
+      <div class="local-desc">생성형 AI 기반 자동 번역·현지화 파이프라인으로 동시 다국어 출시 가능. 출시 시차를 제로에 수렴시키는 기술 혁신.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WEBTOON COVER GALLERY -->
+<section class="osmu-section" id="osmu">
+  <div class="reveal">
+    <div class="section-eyebrow">Featured IP — 주목받는 K-웹툰</div>
+    <h2 class="section-h2">하나의 이야기가<br>모든 세계가 된다</h2>
+    <p class="section-desc">표지에 마우스를 올려 작품 정보를 확인하세요. 이미지를 교체하려면 <code style="font-size:.85em;background:var(--green-2);padding:2px 7px;border-radius:4px;color:var(--forest-dk);">src</code> 속성에 원하는 이미지 경로를 입력하세요.</p>
+  </div>
+  <div class="osmu-grid reveal" style="transition-delay:.15s">
+
+    <!-- 카드 1: 집이 없어 -->
+    <div class="webtoon-cover">
+      <img class="cover-img" src="your-image-1.jpg" alt="집이 없어"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="cover-placeholder" style="display:none">
+        <div class="cover-placeholder-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#6E8F5A" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <div class="cover-placeholder-text">집이 없어<br>표지 이미지 삽입</div>
+      </div>
+      <div class="cover-badge">웹툰</div>
+      <div class="cover-overlay">
+        <span class="cover-tag">로맨스 · 일상</span>
+        <div class="cover-title">집이 없어</div>
+        <div class="cover-desc">네이버웹툰 연재. 집 없는 두 남녀의 현실 로맨스. 드라마화 논의 중.</div>
+      </div>
+    </div>
+
+    <!-- 카드 2: 데뷔못하면 죽는병 걸림 -->
+    <div class="webtoon-cover">
+      <img class="cover-img" src="your-image-2.jpg" alt="데뷔못하면 죽는병 걸림"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="cover-placeholder" style="display:none">
+        <div class="cover-placeholder-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#6E8F5A" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <div class="cover-placeholder-text">데뷔못하면 죽는병 걸림<br>표지 이미지 삽입</div>
+      </div>
+      <div class="cover-badge">웹툰</div>
+      <div class="cover-overlay">
+        <span class="cover-tag">판타지 · 아이돌</span>
+        <div class="cover-title">데뷔못하면 죽는병 걸림</div>
+        <div class="cover-desc">아이돌 서바이벌 판타지. 드라마 제작 확정, 글로벌 팬덤 보유.</div>
+      </div>
+    </div>
+
+    <!-- 카드 3: 이미지 슬롯 -->
+    <div class="webtoon-cover">
+      <img class="cover-img" src="your-image-3.jpg" alt="작품 3"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="cover-placeholder" style="display:none">
+        <div class="cover-placeholder-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#6E8F5A" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <div class="cover-placeholder-text">세 번째 작품<br>표지 이미지 삽입</div>
+      </div>
+      <div class="cover-badge">웹툰</div>
+      <div class="cover-overlay">
+        <span class="cover-tag">장르 · 태그</span>
+        <div class="cover-title">작품명 입력</div>
+        <div class="cover-desc">작품 소개 텍스트를 여기에 입력하세요.</div>
+      </div>
+    </div>
+
+    <!-- 카드 4: 이미지 슬롯 -->
+    <div class="webtoon-cover">
+      <img class="cover-img" src="your-image-4.jpg" alt="작품 4"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="cover-placeholder" style="display:none">
+        <div class="cover-placeholder-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#6E8F5A" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <div class="cover-placeholder-text">네 번째 작품<br>표지 이미지 삽입</div>
+      </div>
+      <div class="cover-badge">웹툰</div>
+      <div class="cover-overlay">
+        <span class="cover-tag">장르 · 태그</span>
+        <div class="cover-title">작품명 입력</div>
+        <div class="cover-desc">작품 소개 텍스트를 여기에 입력하세요.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FUTURE -->
+<section class="future" id="future">
+  <div class="reveal">
+    <div class="section-eyebrow">Future Vision & Sustainability</div>
+    <h2 class="section-h2">다음 챕터를<br>준비하는 산업</h2>
+    <p class="section-desc">AI와 창작자 생태계가 만드는 K-콘텐츠의 다음 10년.</p>
+  </div>
+  <div class="future-grid reveal" style="transition-delay:.1s">
+    <div class="future-card">
+      <div class="future-label">AI & Technology</div>
+      <div class="future-title">생성형 AI로 제작 공정을 혁신한다</div>
+      <div class="future-body">AI 자동 채색·배경 생성·번역 파이프라인으로 작가가 '이야기'에만 집중할 수 있는 환경을 구축. 단순 반복 작업을 자동화해 창작 생산성을 3배 이상 향상시키는 것이 목표다.</div>
+      <div class="future-stat">3×<div class="future-stat-l">AI 도입 시 제작 효율 향상 목표</div></div>
+    </div>
+    <div class="future-card">
+      <div class="future-label">Creator Ecosystem</div>
+      <div class="future-title">신진 작가 발굴 아카데미 시스템</div>
+      <div class="future-body">플랫폼사가 직접 운영하는 공모전·작가 아카데미·멘토링 프로그램으로 다음 세대 창작자를 육성. 해외 현지 작가 육성으로 글로벌 IP의 다양성을 확보한다.</div>
+      <div class="future-stat">2,400+<div class="future-stat-l">연간 신인 작가 아카데미 수료생 (목표)</div></div>
+    </div>
+    <div class="future-card">
+      <div class="future-label">Immersive Tech</div>
+      <div class="future-title">웹툰 세계관의 입체적 확장</div>
+      <div class="future-body">AR·인터랙티브 웹툰 실험을 통해 독자가 이야기 안으로 들어가는 새로운 포맷 개발. 캐릭터가 현실 세계에 등장하는 팬 경험의 차별화.</div>
+      <div class="future-stat">AR+<div class="future-stat-l">차세대 인터랙티브 웹툰 포맷</div></div>
+    </div>
+    <div class="future-card">
+      <div class="future-label">Sustainability</div>
+      <div class="future-title">창작자 수익 보장과 공정 생태계</div>
+      <div class="future-body">블록체인 기반 저작권 관리 시스템 도입으로 2차 저작물 수익을 원작자에게 투명하게 배분. 창작자가 지속 가능한 창작 활동을 이어갈 수 있는 구조 설계.</div>
+      <div class="future-stat">100%<div class="future-stat-l">창작자 수익 추적 투명화 목표</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2025 K·Content Universe — 웹툰·웹소설 산업 리포트 &nbsp;|&nbsp; 본 페이지는 산업 분석 목적으로 제작되었습니다.
+</footer>
+
+<script>
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12 });
+reveals.forEach(el => observer.observe(el));
+
+// Bar chart animation
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.bar-fill').forEach(fill => {
+        fill.style.width = fill.dataset.pct + '%';
+      });
+      barObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+const barChart = document.getElementById('barChart');
+if (barChart) barObserver.observe(barChart);
+</script>
+</body>
+</html>
